@@ -43,7 +43,7 @@
   <script>
     const form = document.getElementById("contractForm");
     const productsDiv = document.getElementById("products");
-
+  
     function addProduct() {
       const index = productsDiv.children.length;
       const product = document.createElement("div");
@@ -55,32 +55,29 @@
       `;
       productsDiv.appendChild(product);
     }
-
+  
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+  
       const formData = new FormData(form);
-      const data = {};
-      for (const [key, value] of formData.entries()) {
-        data[key] = value;
-      }
-
       try {
         const res = await fetch("https://script.google.com/macros/s/AKfycbyn_0HeMcm_ynVFYzkJIsPmciWg9LKFr1A7DBFPS5F6puGAnnHuNjP5ipeNRhKOSoCVqA/exec", {
           method: "POST",
-          body: JSON.stringify(data),
-          headers: { "Content-Type": "application/json" },
+          body: formData
         });
-        const result = await res.text();
-        alert("Готово! " + result);
+  
+        const text = await res.text();
+        alert("✅ Успешно отправлено! " + text);
         form.reset();
         productsDiv.innerHTML = "";
+        addProduct(); // снова один товар
       } catch (err) {
-        alert("Ошибка отправки: " + err);
+        alert("❌ Ошибка отправки: " + err.message);
       }
     });
-
-    // Добавить один товар по умолчанию
+  
     addProduct();
   </script>
+  
 </body>
 </html>
