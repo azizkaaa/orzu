@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Форма генерации договора</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, button, select { display: block; margin-bottom: 10px; width: 100%; padding: 8px; }
+    .product { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Генерация договора рассрочки</h2>
+  <form id="contractForm">
+    <input name="contractNumber" placeholder="Номер договора" required />
+    <input name="contractCode" placeholder="Буквы договора" required />
+    <input name="fullName" placeholder="Ф.И.О Покупателя" required />
+    <input name="passport" placeholder="Паспорт" required />
+    <input name="pinfl" placeholder="ПИНФЛ" required />
+    <input name="phone" placeholder="Телефон" required />
+    
+    <label>Дата первого платежа:</label>
+    <input type="date" name="firstPaymentDate" required />
+    
+    <label>Период рассрочки (в месяцах):</label>
+    <select name="paymentPeriod" required>
+      <option value="">Выбери период</option>
+      <option value="3">3 месяца</option>
+      <option value="6">6 месяцев</option>
+      <option value="9">9 месяцев</option>
+      <option value="12">12 месяцев</option>
+      <option value="18">18 месяцев</option>
+      <option value="24">24 месяцев</option>
+    </select>
+
+    <h3>Товары</h3>
+    <div id="products"></div>
+    <button type="button" onclick="addProduct()">+ Добавить товар</button>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("contractForm");
+    const productsDiv = document.getElementById("products");
+
+    function addProduct() {
+      const index = productsDiv.children.length;
+      const product = document.createElement("div");
+      product.className = "product";
+      product.innerHTML = `
+        <input name="productName_${index}" placeholder="Название товара" required />
+        <input name="productQty_${index}" type="number" placeholder="Количество" required />
+        <input name="productPrice_${index}" type="number" step="0.01" placeholder="Цена (сум)" required />
+      `;
+      productsDiv.appendChild(product);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {};
+      for (const [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbyn_0HeMcm_ynVFYzkJIsPmciWg9LKFr1A7DBFPS5F6puGAnnHuNjP5ipeNRhKOSoCVqA/exec", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        });
+        const result = await res.text();
+        alert("Готово! " + result);
+        form.reset();
+        productsDiv.innerHTML = "";
+      } catch (err) {
+        alert("Ошибка отправки: " + err);
+      }
+    });
+
+    // Добавить один товар по умолчанию
+    addProduct();
+  </script>
+</body>
+</html>
