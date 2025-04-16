@@ -11,11 +11,11 @@
 </head>
 <body>
 
-  <h2>Генерация договра рассрочки</h2>
+  <h2>Генерация договооооора рассрочки</h2>
 
   <form 
     id="contractForm" 
-    action="https://script.google.com/macros/s/AKfycbyn_0HeMcm_ynVFYzkJIsPmciWg9LKFr1A7DBFPS5F6puGAnnHuNjP5ipeNRhKOSoCVqA/exec"
+    action="https://script.google.com/macros/s/AKfycbzJqPtxxjkYZFEUQQy2xbK2GtLUdTk75bGDYjzJmDwEc4CbJ9SVtkuM3XcORSKa-bUkeg/exec"
     method="post" 
     target="invisibleFrame"
   >
@@ -36,6 +36,8 @@
       <option value="6">6 месяцев</option>
       <option value="9">9 месяцев</option>
       <option value="12">12 месяцев</option>
+      <option value="18">18 месяцев</option>
+      <option value="24">24 месяцев</option>
     </select>
 
     <h3>Товары</h3>
@@ -46,7 +48,7 @@
     <button type="submit">📤 Отправить</button>
   </form>
 
-  <!-- Скрытый iframe для отправки -->
+
   <iframe name="invisibleFrame" style="display:none;"></iframe>
 
   <script>
@@ -74,7 +76,7 @@
       }, 1000);
     });
 
-    // Один товар по умолчанию
+
     addProduct();
   </script>
 </body>
